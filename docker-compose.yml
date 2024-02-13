@@ -1,0 +1,44 @@
+services:
+  app_python:
+    tty: true
+    build: 
+      context: .
+      dockerfile: ./docker/python/Dockerfile
+    volumes:
+      - ./src:/app
+    networks:
+      python:
+        ipv4_address: 172.20.0.5
+
+
+  db_python:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'python'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'python'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'python'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'python'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    networks:
+      python:
+        ipv4_address: 172.20.0.4
+# Names our volume
+networks:
+  python:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
