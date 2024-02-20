@@ -3,5 +3,5 @@ client = MongoClient()
 client = MongoClient(host="172.20.0.6", port=27017,username="root",password="example")
 db = client.users
 users = db.user
-user = {"name":"Fer","surname":"Sanchez"}
+user = {"name":"Sara","surname":"Formoso"}
 result = users.insert_one(user)
